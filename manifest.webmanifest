@@ -1,0 +1,20 @@
+{
+  "id": "./",
+  "name": "TONOGO29 AUTO DJ",
+  "short_name": "TONOGO29 DJ",
+  "description": "Automatic DJ music player by TONOGO29",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#090b13",
+  "theme_color": "#090b13",
+  "icons": [
+    {
+      "src": "./icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any"
+    }
+  ]
+}

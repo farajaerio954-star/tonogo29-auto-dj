@@ -1,0 +1,151 @@
+<!doctype html>
+<html lang="sw">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="theme-color" content="#090b13">
+<meta name="description" content="TONOGO29 Automatic DJ — cheza na changanya nyimbo zako moja kwa moja.">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="icon" href="icon.svg" type="image/svg+xml">
+
+<title>TONOGO29 AUTO DJ</title>
+<style>
+:root{--bg:#090b13;--panel:#151a29;--line:#2a3449;--gold:#ffbd39;--muted:#aab4c8;--green:#51e0a0}
+*{box-sizing:border-box}body{margin:0;background:radial-gradient(ellipse at top,#222b40 0,#090b13 65%);color:#f5f7fb;font-family:system-ui,Arial,sans-serif;min-height:100vh;padding:18px}
+main{max-width:760px;margin:auto}header{text-align:center;padding:14px 0 20px}h1{margin:0;color:var(--gold);font-size:clamp(30px,8vw,46px);letter-spacing:3px}header p{margin:5px;color:var(--muted);letter-spacing:2px;font-size:12px}
+.panel{background:#151a29eF;border:1px solid var(--line);border-radius:20px;padding:17px;margin:12px 0;box-shadow:0 12px 32px #0006}
+h2{font-size:17px;margin:0 0 12px;color:var(--gold)}
+button{border:0;border-radius:13px;padding:13px 15px;font-weight:800;background:var(--gold);color:#17130a;font-size:14px}
+button.secondary{background:#303b52;color:#fff}button:disabled{opacity:.4}
+.actions{display:flex;gap:9px;flex-wrap:wrap}.actions button{flex:1;min-width:110px}
+input[type=file]{width:100%;padding:12px;border:1px dashed #53617b;border-radius:12px;color:var(--muted);background:#0e1421}
+.status{display:flex;align-items:center;gap:9px;color:var(--green);font-weight:700;margin:10px 0}
+.dot{width:9px;height:9px;border-radius:50%;background:var(--green);box-shadow:0 0 12px var(--green)}
+.now{font-size:20px;font-weight:800;overflow-wrap:anywhere}.sub{color:var(--muted);font-size:12px;margin-top:4px}
+.progress{height:8px;border-radius:9px;background:#30394c;overflow:hidden;margin:14px 0 5px}.bar{height:100%;width:0;background:linear-gradient(90deg,var(--gold),#ff7b39)}
+.row{display:flex;justify-content:space-between;color:var(--muted);font-size:12px}
+.settings{display:grid;grid-template-columns:1fr 1fr;gap:14px}label{display:block;color:var(--muted);font-size:12px;margin-bottom:6px}input[type=range]{width:100%;accent-color:var(--gold)}
+ul{list-style:none;padding:0;margin:0;max-height:210px;overflow:auto}li{padding:9px 2px;border-bottom:1px solid #283147;font-size:13px;overflow-wrap:anywhere;color:#dce3f0}li.active{color:var(--gold);font-weight:800}
+.hint{font-size:12px;line-height:1.6;color:var(--muted)}footer{text-align:center;color:#758098;font-size:11px;padding:12px}
+@media(max-width:480px){body{padding:11px}.panel{padding:14px}.settings{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+<main>
+<header><h1>TONOGO29</h1><p>AUTOMATIC DJ • NON-STOP MIX</p></header>
+
+<section class="panel">
+<h2>🎵 WEKA NYIMBO ZAKO</h2>
+<input id="files" type="file" accept="audio/*" multiple>
+<p class="hint">Chagua nyimbo nyingi kutoka kwenye simu yako. Nyimbo zinabaki kwenye simu yako; hazipandishwi mtandaoni.</p>
+<div class="actions"><button id="start">▶ ANZA AUTO DJ</button><button class="secondary" id="pause">Ⅱ PAUSE</button><button class="secondary" id="next">⏭ WIMBO UNAOFUATA</button></div>
+<div class="status"><span class="dot"></span><span id="state">Tayari — chagua nyimbo kwanza</span></div>
+</section>
+
+<section class="panel">
+<h2>🔊 INACHEZA SASA</h2>
+<div class="now" id="current">Hakuna wimbo unaochezwa</div>
+<div class="sub" id="nextName">Unaofuata: —</div>
+<div class="progress"><div class="bar" id="bar"></div></div>
+<div class="row"><span id="elapsed">0:00</span><span id="duration">0:00</span></div>
+</section>
+
+<section class="panel">
+<h2>🎚️ AUTO MIX SETTINGS</h2>
+<div class="settings">
+ <div><label for="fade">Muda wa kuchanganya: <b id="fadeVal">8 sec</b></label><input id="fade" type="range" min="2" max="20" value="8"></div>
+ <div><label for="volume">Volume: <b id="volVal">85%</b></label><input id="volume" type="range" min="0" max="100" value="85"></div>
+</div>
+<div class="actions" style="margin-top:14px"><button class="secondary" id="shuffle">🔀 SHUFFLE: OFF</button><button class="secondary" id="repeat">🔁 REPEAT: ON</button></div>
+</section>
+
+<section class="panel">
+<h2>📃 PLAYLIST (<span id="count">0</span>)</h2>
+<ul id="list"><li>Bado hujaongeza nyimbo.</li></ul>
+</section>
+<section class="panel">
+<h2>JINSI INAVYOFANYA KAZI</h2>
+<p class="hint">1. Chagua nyimbo nyingi.<br>2. Bonyeza ANZA AUTO DJ mara moja (simu/browser inahitaji ruhusa ya kuanza sauti).<br>3. Mfumo utacheza nyimbo kwa mfululizo na kuchanganya mwisho wa wimbo mmoja na mwanzo wa mwingine kulingana na muda wa fade ulioweka.</p>
+<p class="hint">Kumbuka: browser inaweza kusimamisha sauti ikiwa ukurasa umefungwa au simu imeweka browser usingizini. Weka ukurasa wazi wakati wa kucheza. Auto DJ hii hufanya crossfade ya sauti; haichambui beat/BPM kwa usahihi wa DJ hardware.</p>
+</section>
+<footer>CREATED BY TONOGO29</footer>
+<script>
+if ("serviceWorker" in navigator) {
+  window.addEventListener("load", () => navigator.serviceWorker.register("./sw.js").catch(()=>{}));
+}
+</script>
+</main>
+<script>
+const $=id=>document.getElementById(id);
+let tracks=[], index=0, audio1=null, audio2=null, active=null, ctx=null, gains={}, playing=false, shuffle=false, repeat=true, timer=null, urls=[];
+function fmt(s){if(!isFinite(s))return '0:00';return Math.floor(s/60)+':'+String(Math.floor(s%60)).padStart(2,'0')}
+function setState(s){$('state').textContent=s}
+function makeDeck(){
+ const a=new Audio();a.preload='auto';
+ const src=ctx.createMediaElementSource(a), gain=ctx.createGain();
+ src.connect(gain);gain.connect(ctx.destination);
+ return {audio:a,gain};
+}
+function ensureAudio(){
+ if(!ctx){ctx=new (window.AudioContext||window.webkitAudioContext)();audio1=makeDeck();audio2=makeDeck();gains={one:audio1,two:audio2};active=audio1;}
+ return ctx.resume();
+}
+function render(){
+ $('count').textContent=tracks.length;
+ $('list').innerHTML='';
+ if(!tracks.length){$('list').innerHTML='<li>Bado hujaongeza nyimbo.</li>';return}
+ tracks.forEach((t,i)=>{const li=document.createElement('li');li.textContent=(i===index?'▶ ':'')+(i+1)+'. '+t.name;if(i===index)li.className='active';$('list').appendChild(li)});
+ $('nextName').textContent='Unaofuata: '+(tracks.length>1?tracks[(index+1)%tracks.length].name:'—');
+}
+$('files').addEventListener('change',e=>{
+ tracks.forEach(t=>URL.revokeObjectURL(t.url));tracks=Array.from(e.target.files||[]).filter(f=>f.type.startsWith('audio/')).map(f=>({name:f.name,url:URL.createObjectURL(f)}));
+ index=0;render();setState(tracks.length?tracks.length+' nyimbo zimeongezwa':'Hakuna nyimbo zilizochaguliwa');
+});
+function chooseNext(){if(!tracks.length)return -1;if(shuffle&&tracks.length>1){let n=index;while(n===index)n=Math.floor(Math.random()*tracks.length);return n}return index+1<tracks.length?index+1:(repeat?0:-1)}
+function setGain(deck,value,seconds=0){const now=ctx.currentTime;deck.gain.gain.cancelScheduledValues(now);deck.gain.gain.setValueAtTime(deck.gain.gain.value,now);if(seconds)deck.gain.gain.linearRampToValueAtTime(value,now+seconds);else deck.gain.gain.setValueAtTime(value,now)}
+async function startTrack(i,deck,fadeFrom=null){
+ if(i<0){playing=false;setState('Playlist imeisha');return}
+ index=i;const t=tracks[index];deck.audio.src=t.url;deck.audio.currentTime=0;
+ const vol=Number($('volume').value)/100;
+ setGain(deck,fadeFrom?0:vol);
+ await deck.audio.play();playing=true;active=deck;
+ $('current').textContent=t.name;render();setState('Auto DJ inaendelea kucheza');
+ if(fadeFrom){
+  const duration=Number($('fade').value);
+  setGain(deck,vol,duration);setGain(fadeFrom,0,duration);
+  setTimeout(()=>{fadeFrom.audio.pause();fadeFrom.audio.removeAttribute('src');fadeFrom.audio.load()},duration*1000+250);
+ }
+}
+async function startAuto(){
+ if(!tracks.length){alert('Tafadhali chagua nyimbo kwanza.');return}
+ try{await ensureAudio();if(playing){setState('Auto DJ tayari inaendelea');return}if(active&&active.audio.src&&active.audio.paused){await active.audio.play();playing=true;setState('Imeendelea');return}await startTrack(index,active||audio1)}catch(e){setState('Imeshindikana kuanza — gusa ANZA tena');}
+}
+function scheduleFade(){
+ if(!playing||!active||!active.audio.duration)return;
+ const remaining=active.audio.duration-active.audio.currentTime, fade=Number($('fade').value);
+ if(remaining<=fade+0.35&&!active._transition){
+  active._transition=true;
+  const n=chooseNext();
+  if(n<0){active.audio.onended=()=>{playing=false;setState('Playlist imeisha')};return}
+  const other=active===audio1?audio2:audio1;
+  startTrack(n,other,active).then(()=>{active._transition=false});
+ }
+}
+$('start').onclick=startAuto;
+$('pause').onclick=()=>{if(!ctx)return;[audio1,audio2].forEach(d=>d&&d.audio.pause());playing=false;setState('Imesitishwa — bonyeza ANZA kuendelea')};
+$('next').onclick=async()=>{if(!tracks.length)return;await ensureAudio();const n=chooseNext();if(n>=0){if(active)active.audio.pause();const other=active===audio1?audio2:audio1;await startTrack(n,other)}};
+$('fade').oninput=e=>$('fadeVal').textContent=e.target.value+' sec';
+$('volume').oninput=e=>{$('volVal').textContent=e.target.value+'%';if(ctx&&active)setGain(active,Number(e.target.value)/100)};
+$('shuffle').onclick=()=>{shuffle=!shuffle;$('shuffle').textContent='🔀 SHUFFLE: '+(shuffle?'ON':'OFF')};
+$('repeat').onclick=()=>{repeat=!repeat;$('repeat').textContent='🔁 REPEAT: '+(repeat?'ON':'OFF')};
+setInterval(()=>{
+ if(!active||!active.audio.src)return;
+ const a=active.audio;
+ $('elapsed').textContent=fmt(a.currentTime);$('duration').textContent=fmt(a.duration);
+ $('bar').style.width=(a.duration?100*a.currentTime/a.duration:0)+'%';
+ scheduleFade();
+ if(a.ended&&!active._transition){const n=chooseNext();if(n>=0){const other=active===audio1?audio2:audio1;startTrack(n,other)}else{playing=false;setState('Playlist imeisha')}}
+},250);
+window.addEventListener('pagehide',()=>tracks.forEach(t=>URL.revokeObjectURL(t.url)));
+</script>
+</body></html>

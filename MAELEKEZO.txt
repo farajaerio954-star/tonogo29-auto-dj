@@ -1,0 +1,18 @@
+TONOGO29 AUTO DJ — PWA package
+
+MUHIMU:
+- Hii ni package ya Progressive Web App (PWA), si APK.
+- Ili Chrome iweze kusakinisha kama app, faili hizi lazima ziwekwe kwenye tovuti yenye HTTPS.
+- Ukifungua index.html moja kwa moja kutoka kwenye Downloads (file://), usakinishaji wa PWA hautafanya kazi.
+
+JINSI YA KUISAKINISHA KWENYE ANDROID:
+1. Pakia faili zote za folder hii kwenye hosting yenye HTTPS (kwa mfano GitHub Pages).
+2. Fungua anuani ya tovuti hiyo kwenye Chrome ya simu.
+3. Fungua menyu ya Chrome (vitone vitatu).
+4. Chagua "Install app" au "Add to Home screen".
+5. Thibitisha. Icon ya TONOGO29 AUTO DJ itaonekana kwenye Home Screen.
+
+Matumizi:
+- Fungua app, chagua nyimbo kwenye simu, kisha bonyeza ANZA AUTO DJ.
+- Weka ukurasa wazi wakati wa kucheza. Mfumo wa Android unaweza kusimamisha audio ikiwa app imewekwa usingizini.
+- Auto mix hapa ni crossfade ya mwisho wa wimbo na mwanzo wa unaofuata; si beat matching ya kitaalamu.
